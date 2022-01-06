@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UserFactory extends Factory
+class VendorFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Vendor::class;
 
     /**
      * Define the model's default state.
@@ -21,18 +21,10 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $abilities = config('auth.gates', []);
-
-        $once = $abilities[array_rand($abilities)];
-
-        $password = env('DEFAULT_USER_PASSWORD') ?: 'password';
-
         return [
-            'name' => $this->faker->userName,
-            'email' => $this->faker->unique()->safeEmail,
-            'mobile' => $this->faker->unique()->e164PhoneNumber,
-            'password' => app('hash')->make($password),
-            'ability' => [$once]
+            'code' => strtoupper($this->faker->unique()->lexify('???')),
+            'name' => $this->faker->company(),
+            'address' => $this->faker->address,
         ];
     }
 

@@ -13,6 +13,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        $this->adminGenerate();
+        $this->call(ItemSeeder::class);
+        $this->call(VendorSeeder::class);
+        $this->call(PurchaseSeeder::class);
+        $this->call(ReceiveSeeder::class);
+        $this->call(BillSeeder::class);
+    }
+
+    public function adminGenerate()
+    {
+        $password = env('DEFAULT_USER_PASSWORD') ?: 'password';
+
+        $user = \App\Models\User::firstOrNew([
+            'email' => 'admin@example.com'
+        ]);
+
+        $user->name = 'Adminstrator';
+        $user->email = 'admin@example.com';
+        $user->mobile = '081234567890';
+        $user->password = app('hash')->make($password);
+        $user->ability = ['*'];
+        $user->save();
+
+        auth()->login($user);
     }
 }
